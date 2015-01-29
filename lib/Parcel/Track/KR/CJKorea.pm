@@ -10,6 +10,7 @@ our $VERSION = '0.002';
 with 'Parcel::Track::Role::Base';
 
 use Capture::Tiny;
+use Encode;
 use File::Which;
 use HTML::Selector::XPath;
 use HTML::TreeBuilder::XPath;
@@ -76,7 +77,7 @@ sub track {
             system( $wget, qw( -O - ), $self->uri );
         };
 
-        $content = $stdout;
+        $content = Encode::encode_utf8( $stdout );
     }
     else {
         $result{result} =
@@ -101,12 +102,24 @@ sub track {
 
     my $prefix = '/html/body/div/div[2]/div/div[2]/ul/li[1]/div';
 
+    my $html1 = ( $tree->findnodes("$prefix/div[1]/div/table") )[0];
+    my $html2 = ( $tree->findnodes("$prefix/div[2]/div/table") )[0];
+    unless ( $html1 && $html2 ) {
+        $result{result} = 'cannot find such parcel info';
+        return \%result;
+    }
+
+    my $found      = ( $tree->findnodes("$prefix/div[2]/div/table/tr[2]/td") )[0];
+    my $found_text = $found ? $found->as_text : q{};
+    my $not_found  = Encode::encode_utf8('조회된 데이터가 없습니다');
+    if ( $found_text =~ m/$not_found/ ) {
+        $result{result} = 'cannot find such parcel info';
+        return \%result;
+    }
+
     $result{from}  = $tree->findvalue("$prefix/div[1]/div/table/tr[2]/td[2]");
     $result{to}    = $tree->findvalue("$prefix/div[1]/div/table/tr[2]/td[3]");
-    $result{htmls} = [
-        ( $tree->findnodes("$prefix/div[1]/div/table") )[0]->as_HTML,
-        ( $tree->findnodes("$prefix/div[2]/div/table") )[0]->as_HTML,
-    ];
+    $result{htmls} = [ $html1->as_HTML, $html2->as_HTML ];
 
     my @elements  = $tree->findnodes("$prefix/div[2]/div/table/tr");
     my $row_index = 0;

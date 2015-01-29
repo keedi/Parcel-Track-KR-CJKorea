@@ -1,4 +1,5 @@
 requires "Capture::Tiny" => "0";
+requires "Encode" => "0";
 requires "File::Which" => "0";
 requires "HTML::Selector::XPath" => "0";
 requires "HTML::TreeBuilder::XPath" => "0";

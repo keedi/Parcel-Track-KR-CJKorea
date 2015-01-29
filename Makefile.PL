@@ -22,6 +22,7 @@ my %WriteMakefileArgs = (
   "NAME" => "Parcel::Track::KR::CJKorea",
   "PREREQ_PM" => {
     "Capture::Tiny" => 0,
+    "Encode" => 0,
     "File::Which" => 0,
     "HTML::Selector::XPath" => 0,
     "HTML::TreeBuilder::XPath" => 0,
@@ -50,6 +51,7 @@ my %WriteMakefileArgs = (
 
 my %FallbackPrereqs = (
   "Capture::Tiny" => 0,
+  "Encode" => 0,
   "ExtUtils::MakeMaker" => "6.17",
   "File::Spec" => 0,
   "File::Which" => 0,
