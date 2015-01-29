@@ -1,6 +1,7 @@
 Revision history for {{ $dist->name }}
 
 {{ $NEXT }}
+    - Handle exception if tracking number is invalid
     - Encode content as UTF-8 when fetching via wget
 
 0.001     2015-01-29 18:01:37+09:00 Asia/Seoul
