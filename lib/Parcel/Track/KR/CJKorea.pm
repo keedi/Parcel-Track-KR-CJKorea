@@ -10,6 +10,7 @@ our $VERSION = '0.002';
 with 'Parcel::Track::Role::Base';
 
 use Capture::Tiny;
+use Encode;
 use File::Which;
 use HTML::Selector::XPath;
 use HTML::TreeBuilder::XPath;
@@ -76,7 +77,7 @@ sub track {
             system( $wget, qw( -O - ), $self->uri );
         };
 
-        $content = $stdout;
+        $content = Encode::encode_utf8( $stdout );
     }
     else {
         $result{result} =
