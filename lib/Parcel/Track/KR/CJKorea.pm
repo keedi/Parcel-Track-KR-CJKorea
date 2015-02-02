@@ -64,13 +64,12 @@ sub track {
         );
 
         my $res = $http->get( $self->uri );
-        print $res->{content};
         unless ( $res->{success} ) {
             $result{result} = 'failed to get parcel tracking info from the site';
             return \%result;
         }
 
-        $content = $res->{content};
+        $content = Encode::encode_utf8( $res->{content} );
     }
     elsif ( my $wget = File::Which::which('wget') ) {
         my ( $stdout, $stderr, $exit ) = Capture::Tiny::capture {
