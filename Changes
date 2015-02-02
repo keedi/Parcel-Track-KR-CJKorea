@@ -1,6 +1,8 @@
 Revision history for {{ $dist->name }}
 
 {{ $NEXT }}
+    - Encode content as UTF-8 when fetching via HTTP::Tiny
+    - Remove debugging code
 
 0.002     2015-01-29 20:27:51+09:00 Asia/Seoul
     - Handle exception if tracking number is invalid
