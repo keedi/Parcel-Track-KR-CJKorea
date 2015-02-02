@@ -1,6 +1,8 @@
 Revision history for {{ $dist->name }}
 
 {{ $NEXT }}
+
+0.003     2015-02-02 10:53:40+09:00 Asia/Seoul
     - Encode content as UTF-8 when fetching via HTTP::Tiny
     - Remove debugging code
 
