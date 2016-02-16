@@ -9,7 +9,6 @@ our $VERSION = '0.004';
 
 with 'Parcel::Track::Role::Base';
 
-use Capture::Tiny;
 use Encode;
 use File::Which;
 use HTML::Selector::XPath;
@@ -21,7 +20,6 @@ use HTTP::Tiny;
 #
 use IO::Socket::SSL;
 use Mozilla::CA;
-use Net::SSLeay;
 
 our $URI =
     'https://www.doortodoor.co.kr/parcel/doortodoor.do?fsp_action=PARC_ACT_002&fsp_cmd=retrieveInvNoACT&invc_no=%s';
