@@ -132,10 +132,10 @@ __END__
     # ID & URI
     print $tracker->id . "\n";
     print $tracker->uri . "\n";
-    
+
     # Track the information
     my $result = $tracker->track;
-    
+
     # Get the information what you want.
     if ( $result ) {
         print "Message sent ok\n";
