@@ -56,33 +56,15 @@ sub track {
         descs  => [],
     );
 
-    my $content;
-    if ( exists &Net::SSLeay::CTX_v2_new ) {
-        my $http = HTTP::Tiny->new(
-            agent       => $AGENT,
-            SSL_options => { SSL_version => 'SSLv2', }
-        );
+    my $http = HTTP::Tiny->new( agent => $AGENT );
+    my $res = $http->get( $self->uri );
 
-        my $res = $http->get( $self->uri );
-        unless ( $res->{success} ) {
-            $result{result} = 'failed to get parcel tracking info from the site';
-            return \%result;
-        }
-
-        $content = Encode::encode_utf8( $res->{content} );
-    }
-    elsif ( my $wget = File::Which::which('wget') ) {
-        my ( $stdout, $stderr, $exit ) = Capture::Tiny::capture {
-            system( $wget, qw( -O - ), $self->uri );
-        };
-
-        $content = Encode::encode_utf8( $stdout );
-    }
-    else {
-        $result{result} =
-            'This version of OpenSSL has been compiled without SSLv2 support and there is no wget';
+    unless ( $res->{success} ) {
+        $result{result} = 'failed to get parcel tracking info from the site';
         return \%result;
     }
+
+    my $content = Encode::decode_utf8( $res->{content} );
 
     unless ($content) {
         $result{result} = 'failed to tracking parcel info';
