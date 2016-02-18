@@ -1,6 +1,8 @@
 Revision history for {{ $dist->name }}
 
 {{ $NEXT }}
+
+0.004     2016-02-18 17:10:56+09:00 Asia/Seoul
     - Remove `wget` fetching, use only HTTP::Tiny
 
 0.003     2015-02-02 10:53:40+09:00 Asia/Seoul
