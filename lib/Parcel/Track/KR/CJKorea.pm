@@ -9,7 +9,6 @@ our $VERSION = '0.004';
 
 with 'Parcel::Track::Role::Base';
 
-use Capture::Tiny;
 use Encode;
 use File::Which;
 use HTML::Selector::XPath;
@@ -21,7 +20,6 @@ use HTTP::Tiny;
 #
 use IO::Socket::SSL;
 use Mozilla::CA;
-use Net::SSLeay;
 
 our $URI =
     'https://www.doortodoor.co.kr/parcel/doortodoor.do?fsp_action=PARC_ACT_002&fsp_cmd=retrieveInvNoACT&invc_no=%s';
@@ -56,33 +54,15 @@ sub track {
         descs  => [],
     );
 
-    my $content;
-    if ( exists &Net::SSLeay::CTX_v2_new ) {
-        my $http = HTTP::Tiny->new(
-            agent       => $AGENT,
-            SSL_options => { SSL_version => 'SSLv2', }
-        );
+    my $http = HTTP::Tiny->new( agent => $AGENT );
+    my $res = $http->get( $self->uri );
 
-        my $res = $http->get( $self->uri );
-        unless ( $res->{success} ) {
-            $result{result} = 'failed to get parcel tracking info from the site';
-            return \%result;
-        }
-
-        $content = Encode::encode_utf8( $res->{content} );
-    }
-    elsif ( my $wget = File::Which::which('wget') ) {
-        my ( $stdout, $stderr, $exit ) = Capture::Tiny::capture {
-            system( $wget, qw( -O - ), $self->uri );
-        };
-
-        $content = Encode::encode_utf8( $stdout );
-    }
-    else {
-        $result{result} =
-            'This version of OpenSSL has been compiled without SSLv2 support and there is no wget';
+    unless ( $res->{success} ) {
+        $result{result} = 'failed to get parcel tracking info from the site';
         return \%result;
     }
+
+    my $content = Encode::decode_utf8( $res->{content} );
 
     unless ($content) {
         $result{result} = 'failed to tracking parcel info';
@@ -152,10 +132,10 @@ __END__
     # ID & URI
     print $tracker->id . "\n";
     print $tracker->uri . "\n";
-    
+
     # Track the information
     my $result = $tracker->track;
-    
+
     # Get the information what you want.
     if ( $result ) {
         print "Message sent ok\n";
