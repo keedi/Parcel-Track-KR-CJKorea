@@ -106,9 +106,10 @@ sub track {
         next if $row_index++ == 0;
 
         my @tds = $e->look_down( '_tag', 'td' );
-        push @{ $result{descs} }, join( q{ }, map $_->as_text, @tds[ 1, 0, 3, 2 ] );
+        push @{ $result{descs} },
+            join( q{ }, map { $_ ? $_->as_text : '' } @tds[ 1, 0, 3, 2 ] );
 
-        $result{result} = join( q{ }, map $_->as_text, @tds[ 1, 0 ] );
+        $result{result} = join( q{ }, map { $_ ? $_->as_text : '' } @tds[ 1, 0 ] );
     }
 
     return \%result;
