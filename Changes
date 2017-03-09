@@ -1,7 +1,7 @@
 Revision history for {{ $dist->name }}
 
 {{ $NEXT }}
-    - Prevent undefined error when there are no query results.
+    - Prevent undefined error when there are no query results. (GH #2)
 
 0.004     2016-02-18 17:10:56+09:00 Asia/Seoul
     - Remove `wget` fetching, use only HTTP::Tiny
