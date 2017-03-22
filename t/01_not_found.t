@@ -12,4 +12,3 @@ ok( $result->{result}, 'exists' );
 $tracker = Parcel::Track->new( 'KR::CJKorea', '697569448284' );
 $result = $tracker->track;
 is( $result->{result}, 'cannot find such parcel info', 'not found' );
-
