@@ -90,7 +90,7 @@ sub track {
 
     my $found      = ( $tree->findnodes("$prefix/div[2]/div/table/tr[2]/td") )[0];
     my $found_text = $found ? $found->as_text : q{};
-    my $not_found  = Encode::encode_utf8('조회된 데이터가 없습니다');
+    my $not_found  = '조회된 데이터가 없습니다';
     if ( $found_text =~ m/$not_found/ ) {
         $result{result} = 'cannot find such parcel info';
         return \%result;
