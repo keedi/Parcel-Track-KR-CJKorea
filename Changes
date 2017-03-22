@@ -1,6 +1,8 @@
 Revision history for {{ $dist->name }}
 
 {{ $NEXT }}
+
+0.005     2017-03-22 15:24:32+09:00 Asia/Seoul
     - [GitHub #2] Prevent undefined error when there are no query results
       (AANOAA)
 
